@@ -1,0 +1,42 @@
+name: Rust
+
+on: [push, pull_request]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_LOG: debug
+  OPEN_AI_URI: https://api.openai.com/v1
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: cargo-fmt
+      run: cargo fmt --verbose
+
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      TELOXIDE_TOKEN: ${{ secrets.TELOXIDE_TOKEN }}
+      OPEN_AI_TOKEN: ${{ secrets.OPEN_AI_TOKEN }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: cargo-test
+      run: cargo test
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: cargo-build
+      run: cargo build --release
+    - name: artifact-build
+      uses: actions/upload-artifact@v3
+      with:
+        name: tg-gpt-bot
+        path: target/release/tg-gpt-bot

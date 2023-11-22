@@ -7,5 +7,5 @@ edition = "2021"
 path = "src/lib.rs"
 
 [dependencies]
-anyhow = "1.0.72"
+anyhow = "1.0.75"
 image = "0.24.6"
